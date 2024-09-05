@@ -1,0 +1,207 @@
+<app-loading-spinner *ngIf="is_loading"></app-loading-spinner>
+<div class="container">
+  <div class="row">
+    <div class="col-12 mt-1">
+      <div class="header-bar">
+        <h4 class="mb-0 fw-medium p-1">EMPLOYEE ATTENDANCE</h4>
+      </div>
+    </div>
+  </div>
+  <form [formGroup]="employeeForm">
+    <div class="row mb-3 mt-3">
+      <div class="col-md-3">
+        <label for="employeename" class="form-label fw-bold">Employee Name</label>
+        <select id="employeeName" class="form-select" formControlName="name">
+          <option value="">Select Employee Name</option>
+          <option *ngFor="let employee of employeeList" [value]="employee.employee_name">{{ employee.employee_name }}
+          </option>
+        </select>
+        <div *ngIf="formControls['name'].invalid && formControls['name'].touched" class="text-danger">
+          Employee name is required.
+        </div>
+      </div>
+      <!-- <div class="col-mb-3">
+        <label for="employeeName" class="form-label fw-bold">Employee Name</label>
+        <select id="employeeName" class="form-select" formControlName="name">
+          <option *ngFor="let employee of employeeList" [value]="employee.employee_name">{{ employee.employee_name }}
+          </option>
+        </select>
+        <div *ngIf="formControls['name'].invalid && formControls['name'].touched" class="text-danger">
+          Employee name is required.
+        </div>
+      </div> -->
+      <div class="col-md-3">
+        <label for="startDate" class="form-label fw-bold">Start Date</label>
+        <input id="startDate" type="datetime-local" class="form-control" formControlName="startDate" />
+        <div *ngIf="formControls['startDate'].invalid && formControls['startDate'].touched" class="text-danger">
+          Start date is required.
+        </div>
+      </div>
+      <div class="col-md-3">
+        <label for="endDate" class="form-label fw-bold">End Date</label>
+        <input id="endDate" type="datetime-local" class="form-control" formControlName="endDate" />
+        <div *ngIf="formControls['endDate'].invalid && formControls['endDate'].touched" class="text-danger">
+          End date is required.
+        </div>
+      </div>
+      <div class="col-md-3 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100" [disabled]="employeeForm.invalid" (click)="onSubmit()">Search</button>
+      </div>
+      <!-- <button mat-icon-button (click)="refreshData()">
+        <mat-icon>refresh</mat-icon>
+      </button> -->
+
+
+    </div>
+    <div class="row mt-2">
+      <div class="col-3">
+        <button mat-raised-button 
+        style="background-color: rgb(96 165 250);color: white;" 
+        (click)="refreshData()"
+        matTooltip="Refresh the Page"
+        matTooltipPosition="above"
+        >
+          <mat-icon class="text-white">refresh</mat-icon>
+          refresh
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div class="container mt-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <div class="card " style="border-top: 3px solid blue;">
+            <div class="card-header d-flex justify-content-end">
+              <!-- <button mat-icon-button (click)="viewPDF()">
+          <mat-icon>remove_red_eye</mat-icon>
+        </button> -->
+              <!-- <button mat-icon-button (click)="convertToPDF()">
+          <mat-icon>download</mat-icon>
+        </button> -->
+              <button mat-raised-button 
+              style="background-color: rgb(96 165 250);color: white;" 
+              (click)="convertToPDF()"
+              matTooltip="Download the Record"
+              matTooltipPosition="above"
+              >
+                <mat-icon class="text-white">download</mat-icon>
+                Download
+              </button>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <!-- Page Size Dropdown -->
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                      <label for="pageSizeSelect" class="form-label me-2">Page Size:</label>
+                      <select id="pageSizeSelect" [(ngModel)]="pageSize" (change)="onPageSizeChange($event)"
+                        class="form-select w-auto">
+                        <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size === 0 ? 'All' : size }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="content">
+                      <thead class="table-danger">
+                        <tr>
+                          <th>Name</th>
+                          <th>Designation</th>
+                          <th>Cabin No</th>
+                          <th>Login Date</th>
+                          <th>Logout Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <ng-container *ngIf="is_filter; else filter">
+                          <tr *ngFor="let employee of employeeAttendance ">
+                            <td>{{ employee?.employee_name }}</td>
+                            <td>{{ employee?.employee_designation }}</td>
+                            <td>{{ employee?.employee_cabinno }}</td>
+                            <!-- <td>{{ employee?.login_date_time }}</td>
+                            <td>
+                              <div *ngIf="employee.logout_date_time">
+                                {{ employee?.logout_date_time }}
+                              </div>
+                              <div *ngIf="!employee.logout_date_time">
+                                {{'N/A' }}
+                              </div>
+                            </td> -->
+                            <td>{{ formatDateTime12Hour(employee?.login_date_time)  }}</td>
+                            <td>
+                              <div *ngIf="employee.logout_date_time">
+                                {{  formatDateTime12Hour(employee?.logout_date_time) }}
+                              </div>
+                              <div *ngIf="!employee.logout_date_time">
+                                N/A
+                              </div>
+                            </td>
+                          </tr>
+                          <tr *ngIf="filteredAttendance?.length === 0">
+                            <td colspan="5" class="text-center">No records found.</td>
+                          </tr>
+                        </ng-container>
+                        <ng-template #filter>
+                          <tr *ngFor="let employee of filteredAttendance ">
+                            <td>{{ employee?.employee_name }}</td>
+                            <td>{{ employee?.employee_designation }}</td>
+                            <td>{{ employee?.employee_cabinno }}</td>
+                            <!-- <td>{{ employee?.login_date_time }}</td> -->
+                    <!-- <td>
+                      <div *ngIf="employee.logout_date_time">
+                        {{ employee?.logout_date_time }}
+                      </div>
+                      <div *ngIf="!employee.logout_date_time">  
+                        {{'N/A' }}
+                      </div>
+                    </td> -->
+                            <td>{{ formatDateTime12Hour(employee?.login_date_time)  }}</td>
+                            <td>
+                              <div *ngIf="employee.logout_date_time">
+                                {{  formatDateTime12Hour(employee?.logout_date_time) }}
+                              </div>
+                              <div *ngIf="!employee.logout_date_time">
+                                N/A
+                              </div>
+                            </td>
+
+                          </tr>
+                          <tr *ngIf="filteredAttendance?.length === 0">
+                            <td colspan="5" class="text-center">No records found.</td>
+                          </tr>
+                        </ng-template>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- Pagination Controls -->
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <li class="page-item" [class.disabled]="currentPage === 1">
+                        <a class="page-link" href="javascript:void(0)" (click)="onPageChange(currentPage - 1)"
+                          tabindex="-1" aria-disabled="currentPage === 1">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                      <li class="page-item">
+                        <span class="page-link">Page {{ currentPage }} of {{ totalPages }}</span>
+                      </li>
+                      <li class="page-item" [class.disabled]="currentPage === totalPages">
+                        <a class="page-link" href="javascript:void(0)" (click)="onPageChange(currentPage + 1)">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,252 @@
+<div class="bg-white">
+  <app-loading-spinner *ngIf="is_loading"></app-loading-spinner>
+<div class="container">
+  <div class="row mt-1">
+    <div class="col-12">
+      <div class="header-bar">
+        <h4 class="mb-1 p-1 fw-medium">DASHBOARD</h4>
+      </div>
+    </div>
+  </div>
+  <div class="row g-4 mt-2">
+    <!-- In Progress Tasks -->
+    <div class="col animate__flipOutX">
+      <div class="card bg-white shadow-sm card-task cursor-pointer rounded-4 " (click)="openTaskDetails('on progress')">
+        <div class="card-body rounded-4" 
+        style="background:  linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(174,150,204,1) 0%, rgba(112,0,196,1) 0%, rgba(186,147,221,1) 100%, rgba(0,212,255,1) 100%);">
+     <div class="d-flex align-items-center justify-content-between mb-4">
+       <h2 class="card-title text-lg fw-bold text-white">In Progress Tasks</h2>
+       <span class="text-primary">
+         <mat-icon class="text-white">description</mat-icon>
+       </span>
+     </div>
+     <p class="text-4xl fw-bold text-white">{{taskCounts.onProgress}}</p>
+   </div>
+   
+      </div>
+    </div>
+  
+    <!-- Completed Tasks -->
+    <div class="col animate__flipOutX">
+      <div class="card bg-white shadow-sm card-task cursor-pointer rounded-4" (click)="openTaskDetails('done')">
+        <div class="card-body  rounded-4" style="background: linear-gradient(90deg, rgba(14,136,82,1) 0%, rgba(131,238,194,1) 100%);">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <h2 class="card-title text-lg fw-bold text-white">Completed Tasks</h2>
+            <span class="text-success">
+              <mat-icon class="text-white">check_circle</mat-icon>
+            </span>
+          </div>
+          <p class="text-4xl fw-bold text-white">{{taskCounts.done}}</p>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Pending Tasks -->
+    <div class="col animate__flipOutX">
+      <div class="card bg-white shadow-sm card-task cursor-pointer rounded-4" (click)="openTaskDetails('pending')">
+        <div class="card-body  rounded-4" style="background: linear-gradient(90deg, rgba(231,161,7,1) 0%, rgba(249,236,195,1) 100%);">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <h2 class="card-title text-lg fw-bold text-white">Pending Tasks</h2>
+            <span class="text-white">
+              <mat-icon class="text-white">attach_file</mat-icon>
+            </span>
+          </div>
+          <p class="text-4xl fw-bold text-white">{{taskCounts.pending}}</p>
+        </div>
+      </div>
+    </div>
+  
+    <!-- All Tasks -->
+    <div class="col animate__flipOutX">
+      <div class="card bg-white shadow-sm card-task cursor-pointer  rounded-4" (click)="openTaskDetails('all')">
+        <div class="card-body rounded-4" style="background: linear-gradient(90deg, rgba(15,128,218,1) 0%, rgba(175,218,246,1) 100%)   ;">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <h2 class="card-title text-lg fw-bold text-white">All Tasks</h2>
+            <span class="text-white">
+              <mat-icon class="" style="color: white;">list_alt</mat-icon>
+            </span>
+          </div>
+          <p class="text-4xl fw-bold text-white">{{taskCounts.all}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+
+  <!-- Row for Table and Bar Chart -->
+  <div class="row mt-4 animate__slideInUp">
+    <!-- Table Column -->
+    <div class="col-12">
+      <div class="card bg-white shadow-sm ">
+        <div class="card-body">
+           <!-- Page Size Dropdown -->
+        <div class="d-flex justify-content-between mb-3">
+          <div>
+            <label for="pageSizeSelect">Page Size:</label>
+            <select id="pageSizeSelect" class="form-select d-inline-block w-auto ml-2" (change)="onPageSizeChange($event)">
+              <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
+            </select>
+          </div>
+          <div>
+            <!-- <input type="text" class="form-control" placeholder="Search..." (input)="onSearchChange($event)"> -->
+          </div>
+        </div>
+          <h2 class="card-title text-lg fw-bold text-dark">Task Details</h2>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="table-danger">
+              <tr>
+                <th>S.N</th>
+                <th>Employee Name</th>
+                <th>Task Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let empDetails of taskDetails;let i=index">
+                <tr *ngFor="let task of empDetails.taskDetails">
+                  <td>{{i+1}}</td>
+                  <td>{{ empDetails.employee_name }}</td> <!-- Employee Name -->
+                  <td>{{ task.project_name }}</td> <!-- Project Name -->
+                  <td>{{ task.start_date | date }}</td> <!-- Start Date -->
+                  <td>{{ task.end_date  | date}}</td> <!-- End Date -->
+                  <td>
+                    <span [ngClass]="getBadgeClass(task.project_status)">{{ task.project_status }}</span>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+        </div>
+         <!-- Pagination Controls -->
+         <nav aria-label="Page navigation example" class="mb-3">
+          <ul class="pagination justify-content-center">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" href="javascript:void(0)" (click)="onPageChange(currentPage - 1)" tabindex="-1" aria-disabled="currentPage === 1">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item"><span class="page-link">Page {{ currentPage }} of {{ totalPages }}</span></li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link" href="javascript:void(0)" (click)="onPageChange(currentPage + 1)">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+    <!-- Bar Chart Column -->
+    <div class="col-12 col-md-6 mt-4 mb-2">
+      <div class="card bg-white shadow-sm">
+        <div class="card-body">
+          <h2 class="card-title text-lg fw-bold text-black">Task Status Distribution</h2>
+          <canvas #taskStatusChart></canvas>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Pie Chart Column -->
+    <div class="col-12 col-md-6 mt-4 mb-2">
+      <div class="card bg-white shadow-sm">
+        <div class="card-body">
+          <h2 class="card-title text-lg fw-bold text-black">Task Status Distribution</h2>
+          <canvas #pieChart></canvas>
+        </div>
+      </div>
+    </div>
+  </div> 
+  <div class="row">
+    <div class="card">
+      <div class="card-body">
+           <!-- Page Size Dropdown -->
+           <div class="d-flex justify-content-between mb-3">
+            <div>
+              <label for="pageSizeSelect">Page Size:</label>
+              <select id="pageSizeSelect" class="form-control d-inline-block w-auto ml-2" (change)="onPageSizeChangeEmployee($event)">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <!-- <option value="all">All</option> -->
+              </select>
+            </div>
+            <div>
+              <!-- <input type="text" class="form-control" placeholder="Search..." (input)="onSearchChange($event)"> -->
+            </div>
+            
+          </div>
+          <h2>My Team</h2>
+        <div class="table-responsive">
+          <table class="table table-hover table-bordered">
+            <thead class=" table-danger">
+              <tr>
+                <th scope="col">S.N</th>
+                <th scope="col" (click)="onSort('employee_name')">UserName</th>
+                <th scope="col">Designation</th>
+                <th scope="col">CabinNo</th>
+                <th scope="col">DateOfJoining</th>
+                <th scope="col">ContactNo</th>
+                <th scope="col">Address</th>
+                <th scope="col">Role</th>
+                <th scope="col">Access</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of employeeList; let i = index">
+                <td scope="row">{{ i + 1 }}</td>
+                <td>{{ item.employee_name }}</td>
+                <td>{{ item.employee_designation }}</td>
+                <td>{{ item.employee_cabinno }}</td>
+                <td>{{ item.employee_dateofjoin | date }}</td> <!-- Assuming employee_dateofjoin is a Date object -->
+                <td>{{ item.employee_contactno }}</td>
+                <td>{{ item.employee_address }}</td>
+                <td>
+                  <ul>
+                    <li *ngFor="let role of item.employee_role">{{ role }}</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul>
+                    <li *ngFor="let access of item.employee_access">{{ access }}</li>
+                  </ul>
+                </td>
+                <td>
+                  <span *ngIf="item?.employee_status" [ngClass]="getBadgeClassEmployee(item?.employee_status)"> {{item.employee_status}}</span>
+                  <span *ngIf="!item.employee_status"> {{'N/A'}}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+         <!-- Pagination Controls -->
+         <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" href="javascript:void(0)" (click)="onPageChangeEmployee(currentPage - 1)" tabindex="-1" aria-disabled="currentPage === 1">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item"><span class="page-link">Page {{ currentPage }} of {{ totalPages }}</span></li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link" href="javascript:void(0)" (click)="onPageChangeEmployee(currentPage + 1)">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+

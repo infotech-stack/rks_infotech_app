@@ -1,0 +1,104 @@
+<app-loading-spinner *ngIf="is_loading"></app-loading-spinner>
+<div class="container mt-3">
+    <div class="row">
+      <div class="col-12">
+        <div class="header-bar">
+          <h4 class="mb-0 fw-medium p-1">TASK REPORT</h4>
+        </div>
+      </div>
+    </div>
+   
+  <div class="card mt-2" style="border-top: 3px solid blue;">
+      
+    <div class="card-body">
+      <!-- Page Size Dropdown -->
+      <div class="d-flex justify-content-between mb-3">
+        <div>
+          <label for="pageSizeSelect">Page Size:</label>
+          <select id="pageSizeSelect" class="form-select d-inline-block w-auto ml-2" (change)="onPageSizeChange($event)">
+            <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
+          </select>
+        </div>
+        <div>
+          <!-- <input type="text" class="form-control" placeholder="Search..." (input)="onSearchChange($event)"> -->
+        </div>
+      </div>
+      <div class="table-responsive">
+          <table class="table table-hover table-bordered">
+            <thead class="table-danger">
+              <tr>
+                <th scope="col">Employee Name</th>
+                <th scope="col">Project Name</th>
+                <th scope="col">Project Description</th>
+                <th scope="col">Send By Name</th>
+                <th scope="col">Send To Name</th>
+                <th scope="col">File Attachment</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Project Status</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let empDetails of tasks">
+                <tr *ngFor="let task of empDetails.taskDetails">
+                  <td>{{ empDetails?.employee_name || 'N/A' }}</td>
+                  <td>{{ task?.project_name || 'N/A' }}</td>
+                  <td>{{ task?.message_description || 'N/A' }}</td>
+                  <td>{{ task?.send_by_name || 'N/A' }}</td>
+                  <td>{{ task?.send_to_name || 'N/A' }}</td>
+                  <td>
+                    <div *ngIf="task?.filename && task?.filename.length > 0; else noFile">
+                      <!-- <mat-icon (click)="downloadFile(task?.filename)">download</mat-icon> -->
+                      <button mat-raised-button  
+                      style="background-color: rgb(96 165 250);color:white;" 
+                      (click)="downloadFile(task?.filename)"
+                      matTooltip="Download the Record"
+                      matTooltipPosition="above"
+                      >
+                        <mat-icon class="text-white">download</mat-icon>
+                        Download
+                      </button>
+                    </div>
+                    <ng-template #noFile>N/A</ng-template>
+                  </td>
+                  <td>{{ task?.start_date ? (task.start_date | date) : 'N/A' }}</td>
+                  <td>{{ task?.end_date ? (task.end_date | date) : 'N/A' }}</td>
+                  <td>
+                    <span [ngClass]="getBadgeClass(task?.project_status)">
+                      {{ task?.project_status || 'N/A' }}
+                    </span>
+                  </td>
+                  <td>
+                    <form [formGroup]="reportForm">
+                      <select class="form-select" formControlName="status" (change)="updateTaskStatus(empDetails, task)">
+                        <option *ngFor="let item of statusValue" [value]="item">{{ item }}</option>
+                      </select>
+                    </form>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+      </div>
+            <!-- Pagination Controls -->
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-center">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" href="javascript:void(0)" (click)="onPageChange(currentPage - 1)" tabindex="-1" aria-disabled="currentPage === 1">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li class="page-item"><span class="page-link">Page {{ currentPage }} of {{ totalPages }}</span></li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <a class="page-link" href="javascript:void(0)" (click)="onPageChange(currentPage + 1)">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            
+    </div>
+  </div>
+  </div>
+  

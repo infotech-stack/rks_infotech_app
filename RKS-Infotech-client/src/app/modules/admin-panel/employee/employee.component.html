@@ -1,0 +1,282 @@
+<app-loading-spinner *ngIf="is_loading"></app-loading-spinner>
+<div class="container">
+  <div class="row mt-1">
+    <div class="col-12">
+      <div class="header-bar">
+        <h4 class="mb-0 fw-medium p-1">ADD NEW EMPLOYEE</h4>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <form [formGroup]="employeeForm">
+            <!-- Personal Details -->
+            <div class="row">
+              <div class="col-12">
+                <h3 class="mb-3 fw-bold  p-2" style="background-color: rgb(248, 215, 218)">Personal Details :</h3>
+              </div>
+              <hr>
+              <div class="col-12 col-md-4 mb-3 mt-3">
+                <label for="name" class="form-label fw-bold">Name</label>
+                <input type="text" id="name" class="form-control " formControlName="name" placeholder="employee name">
+                <div *ngIf="formControls['name'].invalid && (formControls['name'].dirty || formControls['name'].touched)" class="text-danger" >
+                  <div *ngIf="formControls['name'].errors?.['required']">Name is required.</div>
+                  <div *ngIf="formControls['name'].errors?.['minlength']">Username must be at least 2 characters.</div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4 mb-3 mt-3">
+                <label for="email" class="form-label fw-bold">Email</label>
+                <input type="email" id="email" class="form-control" formControlName="email" placeholder="email id">
+                <div *ngIf="formControls['email'].invalid && (formControls['email'].dirty || formControls['email'].touched)" class="text-danger">
+                  <div *ngIf="formControls['email'].errors?.['required']">Email is required.</div>
+                  <div *ngIf="formControls['email'].errors?.['email']">Invalid email format.</div>
+                </div>
+              </div> 
+              <div class="col-12 col-md-4 mb-3 mt-3">
+                <label for="mobileno" class="form-label fw-bold">Mobile Number</label>
+                <input type="number" id="mobileno" class="form-control" formControlName="mobileno" placeholder="mobile no">
+                <div *ngIf="formControls['mobileno'].invalid && (formControls['mobileno'].dirty || formControls['mobileno'].touched)" class="text-danger">
+                  <div *ngIf="formControls['mobileno'].errors?.['required']">Mobile Number is required.</div>
+                  <div *ngIf="formControls['mobileno'].errors?.['pattern']">Invalid mobile number format.</div>
+                  <div *ngIf="formControls['mobileno'].errors?.['maxlength']">Mobileno must be max 10 numbers.</div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4 mb-3 ">
+                <label for="dateofbirth" class="form-label fw-bold">Date of Birth</label>
+                <input type="date" id="dateofbirth" class="form-control" formControlName="dateofbirth">
+                <div *ngIf="formControls['dateofbirth'].invalid && (formControls['dateofbirth'].dirty || formControls['dateofbirth'].touched)" class="text-danger">
+                  <div *ngIf="formControls['dateofbirth'].errors?.['required']">Date of Birth is required.</div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4 mb-3 ">
+                <label for="religion" class="form-label fw-bold">Religion</label>
+                <input type="text" id="religion" class="form-control" formControlName="religion" placeholder="religion">
+                <div *ngIf="formControls['religion'].invalid && (formControls['religion'].dirty || formControls['religion'].touched)" class="text-danger">
+                  <div *ngIf="formControls['religion'].errors?.['required']">Religion is required.</div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4 mb-3 ">
+                <label for="education" class="form-label fw-bold">Education</label>
+                <input type="text" id="education" class="form-control" formControlName="education" placeholder="education">
+                <div *ngIf="formControls['education'].invalid && (formControls['education'].dirty || formControls['education'].touched)" class="text-danger">
+                  <div *ngIf="formControls['education'].errors?.['required']">Education is required.</div>
+                </div>
+              </div>
+                 <!-- Gender -->
+              <div class="col-12 col-md-4 mb-3 d-flex flex-column gap-3">
+               <div>
+                <label  class="form-label fw-bold">Gender</label>
+               </div>
+             <div class="d-flex gap-3">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" id="male" formControlName="gender" value="male">
+                <label class="form-check-label" for="male">Male</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" id="female" formControlName="gender" value="female">
+                <label class="form-check-label" for="female">Female</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" id="others" formControlName="gender" value="others">
+                <label class="form-check-label" for="others">Others</label>
+              </div>
+           
+             </div>
+             <div *ngIf="formControls['gender'].invalid && (formControls['gender'].dirty || formControls['gender'].touched)" class="text-danger">
+              <div *ngIf="formControls['gender'].errors?.['required']">Gender is required.</div>
+            </div>
+              </div>
+                        <div class="col-12 col-md-4 mb-3">
+                <label for="address" class="form-label fw-bold">Address</label>
+                <textarea id="address" class="form-control" formControlName="address" rows="1" placeholder="address..."></textarea>
+                <div *ngIf="formControls['address'].invalid && (formControls['address'].dirty || formControls['address'].touched)" class="text-danger">
+                  <div *ngIf="formControls['address'].errors?.['required']">Address is required.</div>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Work Details -->
+            <div class="row mt-4">
+              <div class="col-12">
+                <h3 class="mb-3 fw-bold  p-2" style="background-color: rgb(248, 215, 218)" >Work Details :</h3>
+              </div>
+              <hr>
+              <div class="col-12 col-md-4 mb-3 mt-3">
+                <label for="dateofjoin" class="form-label fw-bold">Date of Joining</label>
+                <input type="date" id="dateofjoin" class="form-control" formControlName="dateofjoin">
+                <div *ngIf="formControls['dateofjoin'].invalid && (formControls['dateofjoin'].dirty || formControls['dateofjoin'].touched)" class="text-danger">
+                  <div *ngIf="formControls['dateofjoin'].errors?.['required']">Date of Joining is required.</div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4 mb-3 mt-3">
+                <label for="designation" class="form-label fw-bold">Designation</label>
+                <input type="text" id="designation" class="form-control" formControlName="designation" placeholder=" Designation">
+                <div *ngIf="formControls['designation'].invalid && (formControls['designation'].dirty || formControls['designation'].touched)" class="text-danger">
+                  <div *ngIf="formControls['designation'].errors?.['required']">Designation is required.</div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4 mb-3 mt-3">
+                <label for="cabinno" class="form-label fw-bold">Cabin Number</label>
+                <input type="text" id="cabinno" class="form-control" formControlName="cabinno" placeholder="cabin no">
+                <div *ngIf="formControls['cabinno'].invalid && (formControls['cabinno'].dirty || formControls['cabinno'].touched)" class="text-danger">
+                  <div *ngIf="formControls['cabinno'].errors?.['required']">Cabin Number is required.</div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4 mb-3">
+                <label for="experience" class="form-label fw-bold">Experience</label>
+                <input type="text" id="experience" class="form-control" formControlName="experience" placeholder="ex: experience-year/month">
+                <div *ngIf="formControls['experience'].invalid && (formControls['experience'].dirty || formControls['experience'].touched)" class="text-danger">
+                  <div *ngIf="formControls['experience'].errors?.['required']">Experience is required.</div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4 mb-3">
+                <label for="role" class="form-label fw-bold">Select The Role</label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select id="role" formControlName="role" multiple placeholder="role">
+                    <mat-option *ngFor="let role of employeeRole" [value]="role.role_name">
+                      {{role.role_name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-12 col-md-4 mb-3">
+                <label for="access" class="form-label fw-bold">Select The Access</label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select id="access" formControlName="access" multiple placeholder="access">
+                    <mat-option *ngFor="let access of employeeAccess" [value]="access.access_name">
+                      {{access.access_name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-12 col-md-4 mb-3">
+                <label for="password" class="form-label fw-bold">Password</label>
+                <input type="password" class="form-control" id="password" formControlName="password" placeholder="password" >
+                <div *ngIf="formControls['password'].invalid && (formControls['password'].dirty || formControls['password'].touched)" class="text-danger">
+                  <div *ngIf="formControls['password'].errors?.['required']">Password is required.</div>
+                  <div *ngIf="formControls['password'].errors?.['minlength']">Password must be at least 6 characters.</div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4 mb-3">
+                <label for="confirmPassword" class="form-label fw-bold">Confirm Password</label>
+                <input type="password" class="form-control"  id="confirmPassword"  formControlName="confirmPassword" placeholder="confirm-password">
+                <div *ngIf="employeeForm.controls['confirmPassword'].invalid && (employeeForm.controls['confirmPassword'].dirty || employeeForm.controls['confirmPassword'].touched)" class="text-danger">
+                  <div *ngIf="employeeForm.controls['confirmPassword'].errors?.['required']">Confirm Password is required</div>
+                  <div *ngIf="employeeForm.controls['confirmPassword'].errors?.['notMatching']">Passwords do not match</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-12 text-center">
+                <button type="submit" *ngIf="addBtnFlag" class="btn btn-primary" [disabled]="employeeForm.invalid" (click)="insertEmployee()">Add New Employee</button>
+                <button type="submit" *ngIf="editBtnFlag" class="btn btn-warning" (click)="updateEmployee()">Edit Employee</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container mt-3">
+  <div class="card" style="border-top: 3px solid blue;">
+    <div class="card-body">
+         <!-- Page Size Dropdown -->
+         <div class="d-flex justify-content-between mb-3">
+          <div>
+            <label for="pageSizeSelect">Page Size:</label>
+            <select id="pageSizeSelect" class="form-control d-inline-block w-auto ml-2" (change)="onPageSizeChange($event)">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <!-- <option value="all">All</option> -->
+            </select>
+          </div>
+          <div>
+            <!-- <input type="text" class="form-control" placeholder="Search..." (input)="onSearchChange($event)"> -->
+          </div>
+        </div>
+      <div class="table-responsive">
+        <table class="table table-hover table-bordered">
+          <thead class=" table-danger">
+            <tr>
+              <th scope="col">S.N</th>
+              <th scope="col" (click)="onSort('employee_name')">UserName</th>
+              <th scope="col">Designation</th>
+              <th scope="col">CabinNo</th>
+              <th scope="col">DateOfJoining</th>
+              <th scope="col">ContactNo</th>
+              <th scope="col">Address</th>
+              <th scope="col">Role</th>
+              <th scope="col">Access</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of employeeList; let i = index">
+              <td scope="row">{{ i + 1 }}</td>
+              <td>{{ item.employee_name }}</td>
+              <td>{{ item.employee_designation }}</td>
+              <td>{{ item.employee_cabinno }}</td>
+              <td>{{ item.employee_dateofjoin | date }}</td> <!-- Assuming employee_dateofjoin is a Date object -->
+              <td>{{ item.employee_contactno }}</td>
+              <td>{{ item.employee_address }}</td>
+              <td>
+                <ul>
+                  <li *ngFor="let role of item.employee_role">{{ role }}</li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li *ngFor="let access of item.employee_access">{{ access }}</li>
+                </ul>
+              </td>
+              <td>
+                <div class="d-flex gap-2">
+                  <button 
+                  class="btn btn-warning text-white d-flex gap-1" 
+                  (click)="editUser(item)"
+                  matTooltip="Edit the Record"
+                  matTooltipPosition="above"
+                  >
+                    <mat-icon class="text-white">edit</mat-icon> <span>Edit</span>
+                  </button>
+                  
+                  <button 
+                  class="btn btn-danger text-white d-flex gap-1" 
+                  (click)="openDialog(item)"
+                  matTooltip="Delete the Record"
+                  matTooltipPosition="above"
+                  >
+                    <mat-icon class="text-white">delete</mat-icon> <span>Delete</span>
+                  </button>
+                   
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+       <!-- Pagination Controls -->
+       <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" href="javascript:void(0)" (click)="onPageChange(currentPage - 1)" tabindex="-1" aria-disabled="currentPage === 1">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item"><span class="page-link">Page {{ currentPage }} of {{ totalPages }}</span></li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" href="javascript:void(0)" (click)="onPageChange(currentPage + 1)">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      
+    </div>
+  </div>
+</div>

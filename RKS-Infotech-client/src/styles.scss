@@ -1,0 +1,12 @@
+/* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
+@use "./styles/themes/light";
+@use "./styles//components";
+@import "styles/global";
+@import "styles//variables";
+@import "styles/component-global";
+@import "tailwindcss/utilities";
+html, body { height: 100%;font-family:'Times New Roman', Times, serif   ;}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

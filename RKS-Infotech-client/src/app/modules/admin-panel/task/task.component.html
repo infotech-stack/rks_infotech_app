@@ -1,0 +1,214 @@
+
+<div class="container">
+  <app-loading-spinner *ngIf="is_loading"></app-loading-spinner>
+  <div class="row mt-1">
+    <div class="col-12">
+      <div class="header-bar">
+        <h4 class="mb-0 fw-medium p-1">TASK SCHEDULER</h4>
+      </div>
+    </div>
+  </div>
+  <div class="container mt-5">
+    <div class="card">
+      <div class="card-body">
+        <form [formGroup]="taskForm">
+          <div class="row">
+            <!-- First Row: Project Name and Start Date -->
+            <div class="col-12 col-md-6">
+              <div class="mb-3">
+                <label for="projectName" class="form-label fw-bold">Project Name</label>
+                <input type="text" id="projectName" class="form-control" formControlName="projectName" placeholder="project name">
+                <div *ngIf="taskForm.controls['projectName'].invalid && (taskForm.controls['projectName'].dirty || taskForm.controls['projectName'].touched)" class="text-danger">
+                  <div *ngIf="taskForm.controls['projectName'].errors?.['required']">Project Name is required.</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="mb-3">
+                <label for="startDate" class="form-label fw-bold">Start Date</label>
+                <input type="date" id="startDate" class="form-control" formControlName="startDate">
+                <div *ngIf="taskForm.controls['startDate'].invalid && (taskForm.controls['startDate'].dirty || taskForm.controls['startDate'].touched)" class="text-danger">
+                  <div *ngIf="taskForm.controls['startDate'].errors?.['required']">Start Date is required.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="row">
+            <!-- Second Row: End Date and Project Status -->
+            <div class="col-12 col-md-6">
+              <div class="mb-3">
+                <label for="endDate" class="form-label fw-bold">End Date</label>
+                <input type="date" id="endDate" class="form-control" formControlName="endDate">
+                <div *ngIf="taskForm.controls['endDate'].invalid && (taskForm.controls['endDate'].dirty || taskForm.controls['endDate'].touched)" class="text-danger">
+                  <div *ngIf="taskForm.controls['endDate'].errors?.['required']">End Date is required.</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="mb-3">
+                <label for="projectStatus" class="form-label fw-bold">Project Status</label>
+                <select id="projectStatus" class="form-select" formControlName="projectStatus">
+                  <option value="">Select project status</option>
+                  <option *ngFor="let status of taskStatus" [value]="status">{{status}}</option>
+                </select>
+                <div *ngIf="taskForm.controls['projectStatus'].invalid && (taskForm.controls['projectStatus'].dirty || taskForm.controls['projectStatus'].touched)" class="text-danger">
+                  <div *ngIf="taskForm.controls['projectStatus'].errors?.['required']">Project Status is required.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <!-- Fourth Row: File Attachment -->
+            <div class="col-12 col-md-6">
+              <div class="mb-3">
+                <label for="fileAttachment" class="form-label fw-bold">File Attachment</label>
+                <!-- <div *ngIf="selectedFiles?.length > 0">
+                  <ul>
+                    <li *ngFor="let file of selectedFiles">{{ file?.name }}</li>
+                  </ul>
+                </div> -->
+                <input type="file" id="fileAttachment" class="form-control" formControlName="fileAttachment" multiple  (change)="onSelectFiles($event)">
+                <div *ngIf="selectedFiles">
+                  Selected file: {{ selectedFiles }}
+                </div>
+                <div *ngIf="existingFileName && !selectedFiles">
+                  Current file: {{ existingFileName }}
+                </div>
+                <div *ngIf="taskForm.controls['fileAttachment'].invalid && (taskForm.controls['fileAttachment'].dirty || taskForm.controls['fileAttachment'].touched)" class="text-danger">
+                  <div *ngIf="taskForm.controls['fileAttachment'].errors?.['required']">File Attachment is required.</div>
+                </div>
+              </div>
+              
+            </div>
+                   <!-- Fifth Row: Message Description -->
+            <div class="col-12 col-md-6">
+              <div class="mb-3">
+                <label for="messageDescription" class="form-label fw-bold">Message Description</label>
+                <textarea id="messageDescription" class="form-control" formControlName="messageDescription" rows="1" placeholder="Enter message description"></textarea>
+                <div *ngIf="taskForm.controls['messageDescription'].invalid && (taskForm.controls['messageDescription'].dirty || taskForm.controls['messageDescription'].touched)" class="text-danger">
+                  <div *ngIf="taskForm.controls['messageDescription'].errors?.['required']">Message Description is required.</div>
+                </div>
+              </div>
+            </div>
+          </div>    
+          <div class="row">
+            <!-- Third Row: Assign To (Employee Selection) -->
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="assignTo" class="form-label fw-bold">Assign To</label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select id="assignTo" formControlName="assignTo" multiple placeholder="Select employee">
+                    <mat-option [value]="'all'">All</mat-option>
+                    <mat-option *ngFor="let role of employees" [value]="role.employee_name">
+                      {{role.employee_name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="taskForm.controls['assignTo'].invalid && (taskForm.controls['assignTo'].dirty || taskForm.controls['assignTo'].touched)" class="text-danger">
+                  <div *ngIf="taskForm.controls['assignTo'].errors?.['required']">Assign To is required.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+         
+          <div class="row justify-content-center">
+            <div class="col-12 text-center">
+              <button type="submit" class="btn btn-primary" *ngIf="addFlag" [disabled]="taskForm.invalid" (click)="onSubmit()">Assign Task</button>
+              <button type="submit" class="btn btn-warning" *ngIf="editFlag" (click)="updateTask()">Edit Task</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container mt-3">
+    <div class="card" style="border-top: 3px solid blue;">
+      <div class="card-body">
+        <!-- Page Size Dropdown -->
+        <div class="d-flex justify-content-between mb-3">
+          <div>
+            <label for="pageSizeSelect">Page Size:</label>
+            <select id="pageSizeSelect" class="form-select d-inline-block w-auto ml-2" (change)="onPageSizeChange($event)">
+              <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
+            </select>
+          </div>
+          <div>
+            <!-- <input type="text" class="form-control" placeholder="Search..." (input)="onSearchChange($event)"> -->
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover table-bordered">
+            <thead class="table-danger">
+              <tr>
+                <th scope="col" (click)="onSort('employee_name')">Employee Name</th>
+                <th scope="col" (click)="onSort('project_name')">Project Name</th>
+                <th scope="col" (click)="onSort('start_date')">Start Date</th>
+                <th scope="col" (click)="onSort('end_date')">End Date</th>
+                <th scope="col" (click)="onSort('project_status')">Project Status</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let empDetails of taskDetails">
+                <tr *ngFor="let task of empDetails.taskDetails">
+                  <td>{{ empDetails.employee_name }}</td>
+                  <td>{{ task.project_name }}</td>
+                  <td>{{ task.start_date | date }}</td>
+                  <td>{{ task.end_date | date }}</td>
+                  <td>
+                    <span [ngClass]="getBadgeClass(task.project_status)">{{ task.project_status }}</span>
+                  </td>
+                  <td>
+                    <div class="d-flex gap-2">
+                      <button 
+                      class="btn btn-sm btn-warning d-flex gap-1" 
+                      (click)="editTask(task, empDetails)"
+                      matTooltip="Edit the Record"
+                      matTooltipPosition="above"
+                      >
+                        <mat-icon class="text-white">edit</mat-icon> <span>Edit</span>
+                      </button>
+         
+                      <button 
+                      class="btn btn-sm btn-danger d-flex gap-1" 
+                      (click)="openDialog(task, empDetails)"
+                      matTooltip="Delete the Record"
+                      matTooltipPosition="above"
+                      >
+                        <mat-icon class="text-white">delete</mat-icon> <span>Delete</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+        <!-- Pagination Controls -->
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" href="javascript:void(0)" (click)="onPageChange(currentPage - 1)" tabindex="-1" aria-disabled="currentPage === 1">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item"><span class="page-link">Page {{ currentPage }} of {{ totalPages }}</span></li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link" href="javascript:void(0)" (click)="onPageChange(currentPage + 1)">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+   
+  </div>
+  
