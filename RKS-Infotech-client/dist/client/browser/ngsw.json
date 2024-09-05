@@ -1,0 +1,105 @@
+{
+  "configVersion": 1,
+  "timestamp": 1724228089187,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/chunk-CISKVCG4.js",
+        "/chunk-FK6H3RFT.js",
+        "/chunk-HXPPFPT4.js",
+        "/chunk-I466TPOU.js",
+        "/chunk-RVFOIZLJ.js",
+        "/chunk-TTRMZJVS.js",
+        "/chunk-YMBUA33H.js",
+        "/chunk-ZBLU7F5U.js",
+        "/favicon.ico",
+        "/index.html",
+        "/main-FBZED3U2.js",
+        "/manifest.webmanifest",
+        "/polyfills-6EAL64PA.js",
+        "/styles-VLF3SG3D.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/assets/icons/icon-128x128.png",
+        "/assets/icons/icon-144x144.png",
+        "/assets/icons/icon-152x152.png",
+        "/assets/icons/icon-192x192.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-72x72.png",
+        "/assets/icons/icon-96x96.png",
+        "/assets/image/Modern Office Corridor.jpg",
+        "/assets/image/doc.png",
+        "/assets/image/rks infotech logo PNG 32 (1).png",
+        "/assets/image/rks infotech png logo.png",
+        "/assets/image/user.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/assets/icons/icon-128x128.png": "f912963bdc6d5a38d8f1dd0afbaab2ce8d657acb",
+    "/assets/icons/icon-144x144.png": "b155fd5f2fd5d2ea7760721063003c4cd95fd783",
+    "/assets/icons/icon-152x152.png": "eae6e0f0c8afb8aaae339e2a569b43e9238e5e6c",
+    "/assets/icons/icon-192x192.png": "15c4180454633880d98674aa7394656196c91584",
+    "/assets/icons/icon-384x384.png": "94a915751ef6c9282df9aea405ad679230631814",
+    "/assets/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
+    "/assets/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
+    "/assets/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
+    "/assets/image/Modern Office Corridor.jpg": "b622ce56f5590c71fac9a38d26fadf8f9105f4e9",
+    "/assets/image/doc.png": "d5f6de8be5d2f434d312d328a707e36ab12d1617",
+    "/assets/image/rks infotech logo PNG 32 (1).png": "af09d525c40a27803bd00f1e2eaea3ca1a179b15",
+    "/assets/image/rks infotech png logo.png": "911a4fc01eae073c3389a23cce4a11686c45b892",
+    "/assets/image/user.png": "a92c1ae987105182857a1dc0b736d87cb93a28e2",
+    "/chunk-CISKVCG4.js": "8ec94055c8d54cd90963e4197579b578c132ff9d",
+    "/chunk-FK6H3RFT.js": "3c538698719f1cf34410542b8c702bc484e025ee",
+    "/chunk-HXPPFPT4.js": "661108d67ebfd8957c72f666bf3d8a8bc50b9add",
+    "/chunk-I466TPOU.js": "13b5af4724c95d84ddf95b6b1fe7fb7893486431",
+    "/chunk-RVFOIZLJ.js": "cf7aac42b93d52979f1c92de60f44de3a4cbc74a",
+    "/chunk-TTRMZJVS.js": "dc6e45fae6586a686cf83ec8370782054c98e019",
+    "/chunk-YMBUA33H.js": "aefd06bff253f9bf3dfc0037ef4103907b222def",
+    "/chunk-ZBLU7F5U.js": "e953dc371f9656cabce02cbe84b199aee043500f",
+    "/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
+    "/index.html": "d7571b0514af144af446b50f2d25d4ad9d959816",
+    "/main-FBZED3U2.js": "70f1c26d1fc7be95e77cd8591d9c3fe79572c599",
+    "/manifest.webmanifest": "605dfc89b1c053da2014a31b2816dfb196e3d3bc",
+    "/polyfills-6EAL64PA.js": "d874147a12a6570d9b44e99935e9de8b7f3cabbc",
+    "/styles-VLF3SG3D.css": "79b3ed743c13baa112c868ea57fb66004930de34"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}

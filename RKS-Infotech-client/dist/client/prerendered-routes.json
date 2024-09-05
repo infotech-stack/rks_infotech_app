@@ -1,0 +1,15 @@
+{
+  "routes": [
+    "/dashboard",
+    "/dashboard/attendance",
+    "/dashboard/dashboard-sub",
+    "/dashboard/employee",
+    "/dashboard/message",
+    "/dashboard/search-employee",
+    "/dashboard/settings",
+    "/dashboard/task",
+    "/dashboard/task-report",
+    "/dashboard/task-status",
+    "/login"
+  ]
+}
